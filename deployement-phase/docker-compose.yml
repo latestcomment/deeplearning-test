@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:15
+    hostname: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    networks:
+      - dlnetwork
+    volumes: 
+      - db:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  app:
+    image: latestcomment/pythorch-model:1.0
+    ports:
+      - "5000:5000"
+    networks:
+      - dlnetwork
+    
+volumes:
+  db:
+    driver: local
+networks:
+  dlnetwork:
